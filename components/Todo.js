@@ -1,17 +1,26 @@
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { TouchableOpacity, View, Text, StyleSheet, Modal } from "react-native";
+import EditTodo from "./EditTodo";
 
 export default Todo = ({
   nameTodo,
   todoDone,
   updateTodoDone,
+  updateTodo,
   indexTodo,
   deleteTodo,
 }) => {
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
   const titleBtn = todoDone ? "Validé" : "A faire";
 
   const styleBtnUpdate = todoDone
     ? [styles.updateBtn, styles.updateBtnYes]
     : [styles.updateBtn, styles.updateBtnNo];
+
+  const handleUpdateTodo = (newName) => {
+    updateTodo(indexTodo, newName);
+  };
 
   return (
     <View style={styles.todoContainer}>
@@ -34,6 +43,31 @@ export default Todo = ({
           Supprimer
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.editBtn}
+        onPress={() => setIsEditModalVisible(true)}
+      >
+        <Text style={styles.textButton}>Modifier</Text>
+      </TouchableOpacity>
+      <Modal
+        visible={isEditModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsEditModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <EditTodo
+              nameTodo={nameTodo}
+              updateTodo={handleUpdateTodo}
+              onClose={() => setIsEditModalVisible(false)}
+            />
+            <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+              <Text style={styles.modalCloseButton}>Fermer</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -65,6 +99,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF4136",
     borderRadius: 10,
   },
+  editBtn: {
+    height: 50,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#03B7F0",
+    borderRadius: 10,
+  },
   textButton: {
     fontSize: 15,
     fontWeight: "bold",
@@ -86,5 +128,51 @@ const styles = StyleSheet.create({
   },
   updateBtnNo: {
     backgroundColor: "red",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modal: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    width: "80%",
+    padding: 20,
+    alignItems: "center",
+  },
+  inputContainer: {
+    width: "100%",
+    marginVertical: 20,
+  },
+  input: {
+    backgroundColor: "#f2f2f2",
+    padding: 10,
+    borderRadius: 5,
+    width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  button: {
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 5,
+    width: "45%",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  cancelButton: {
+    backgroundColor: "grey",
+  },
+  errorText: {
+    color: "red",
+    marginVertical: 10,
   },
 });

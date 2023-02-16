@@ -53,11 +53,13 @@ export default function App() {
     setTodoList(tmpTodoList);
   };
 
-  const updateTodo = (index, newTodo) => {
+  // Fonction pour mettre à jour le nom d'une tâche
+  const updateTodo = (indexTodo, newName) => {
     const tmpTodoList = [...todoList];
-    tmpTodoList[index] = newTodo;
+    tmpTodoList[indexTodo].name = newName;
     setTodoList(tmpTodoList);
   };
+
 
   // Effet pour récupérer la liste des tâches stockée dans AsyncStorage au chargement de l'application
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function App() {
   useEffect(() => {
     saveTodo();
   });
+
 
   console.log(todoList);
 

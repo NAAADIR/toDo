@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, Text, StyleSheet, Modal } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet, Modal, Alert } from "react-native";
 import EditTodo from "./EditTodo";
 
 export default Todo = ({
   nameTodo,
+  descriptionTodo,
   todoDone,
   updateTodoDone,
   updateTodo,
@@ -11,6 +12,7 @@ export default Todo = ({
   deleteTodo,
 }) => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
 
   const titleBtn = todoDone ? "Validé" : "A faire";
 
@@ -20,6 +22,10 @@ export default Todo = ({
 
   const handleUpdateTodo = (newName) => {
     updateTodo(indexTodo, newName);
+  };
+
+  const handleShowDescription = () => {
+    Alert.alert("Description", descriptionTodo);
   };
 
   return (
@@ -32,7 +38,14 @@ export default Todo = ({
       >
         <Text style={styles.textUpdateBtn}>{titleBtn}</Text>
       </TouchableOpacity>
-      <Text style={styles.nameTodo}>{nameTodo}</Text>
+      <TouchableOpacity
+        style={[styles.nameTodo]}
+        onPress={() => {
+          handleShowDescription();
+        }}
+      >
+        <Text style={[styles.nameTodo]}>{nameTodo}</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.deleteBtn}>
         <Text
           style={styles.textButton}
@@ -89,7 +102,9 @@ const styles = StyleSheet.create({
     flex: 3,
     fontSize: 15,
     textAlign: "center",
-    color: "white",
+    color: "#fff",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   deleteBtn: {
     height: 50,
